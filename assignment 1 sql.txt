@@ -1,16 +1,30 @@
-Solutions for the assignment
+Solutions for the assignment 1
+
+i have create table i.e test_order ;
+
+create table test_order(
+customer_id int,
+order_id int,
+date timestamp,
+credits_used int
+);
+
 1) Answer
-a)
+a)count the number of active customers(active customer= an user who placed 2 or more orders)
+ 
 select count(distinct customer_id) from test_order where customer_id in (
 select  customer_id from test_order  group by customer_id having count(customer_id)>=2);
 
-b)
+b)count the number of orders made within the last 60 days(dynamic date)
+
 select count(*) FROM test_order WHERE date BETWEEN DATE_SUB(NOW(), INTERVAL 60 DAY) AND NOW();
 
-c)
+c) count the number of distinct customer whose 2nd order was place in 2020
+
 select count(distinct customer_id) from test_order where customer_id in (
 select  customer_id from test_order where YEAR(date)=2020 and customer_id in
 (select  customer_id from test_order where YEAR(date)<2020 group by customer_id having count(customer_id)=1) group by customer_id having count(customer_id)>=2);
 
-d)
+d) Percentage of Customer that place at least one order the calendar month following their first order
+
 select customer_id, COUNT(*) / CAST( SUM(count(*)) over () as float) from test_order group by customer_id;
