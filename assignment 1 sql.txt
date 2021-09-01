@@ -1,0 +1,16 @@
+Solutions for the assignment
+1) Answer
+a)
+select count(distinct customer_id) from test_order where customer_id in (
+select  customer_id from test_order  group by customer_id having count(customer_id)>=2);
+
+b)
+select count(*) FROM test_order WHERE date BETWEEN DATE_SUB(NOW(), INTERVAL 60 DAY) AND NOW();
+
+c)
+select count(distinct customer_id) from test_order where customer_id in (
+select  customer_id from test_order where YEAR(date)=2020 and customer_id in
+(select  customer_id from test_order where YEAR(date)<2020 group by customer_id having count(customer_id)=1) group by customer_id having count(customer_id)>=2);
+
+d)
+select customer_id, COUNT(*) / CAST( SUM(count(*)) over () as float) from test_order group by customer_id;
